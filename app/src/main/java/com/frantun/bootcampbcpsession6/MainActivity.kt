@@ -3,8 +3,8 @@ package com.frantun.bootcampbcpsession6
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.frantun.bootcampbcpsession6.adapter.DepthPageTransformer
 import com.frantun.bootcampbcpsession6.adapter.PhotosPagerAdapter
-import com.frantun.bootcampbcpsession6.adapter.ZoomOutPageTransformer
 import com.frantun.bootcampbcpsession6.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,13 +19,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setUI()
+        setListeners()
     }
 
     private fun setUI() {
         photosPagerAdapter = PhotosPagerAdapter(buildList(), this)
         binding.photosViewPager.adapter = photosPagerAdapter
 //        binding.photosViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
-        binding.photosViewPager.setPageTransformer(ZoomOutPageTransformer())
+        binding.photosViewPager.setPageTransformer(DepthPageTransformer())
     }
 
     private fun buildList() = listOf(
@@ -35,8 +36,16 @@ class MainActivity : AppCompatActivity() {
         R.drawable.cat_4,
         R.drawable.cat_5
     )
-}
 
-// despliegue desde cero
-// workmanager -> courutines
-// RA
+    private fun setListeners() {
+        binding.photosViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                binding.counterTextView.text =
+                    getString(R.string.counter_photo, position + 1, buildList().size)
+            }
+        })
+    }
+}

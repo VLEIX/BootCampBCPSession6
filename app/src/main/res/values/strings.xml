@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BootCampBCPSession6</string>
+    <string name="counter_photo">Photo %d de %d</string>
 </resources>
